@@ -1,0 +1,180 @@
+[
+  {
+    "id": "git-min",
+    "name": "Git（MinGit 便携版）",
+    "category": "基础工具",
+    "version": "最新稳定版",
+    "channel": "zip",
+    "defaultSubdir": "git",
+    "locationPolicy": "flexible",
+    "sizeMB": 50,
+    "requiresAdmin": false,
+    "why": "几乎所有包管理器和工具链都以 git 为前提；便携版解压即用，不写系统目录",
+    "requires": { "minFreeDiskGB": 0.3 }
+  },
+  {
+    "id": "uv",
+    "name": "uv",
+    "category": "Python",
+    "version": "最新稳定版",
+    "channel": "zip",
+    "defaultSubdir": "uv",
+    "locationPolicy": "flexible",
+    "sizeMB": 35,
+    "requiresAdmin": false,
+    "why": "单文件、免管理员，自己管理多个 Python 版本，装包速度比 pip 快一个数量级",
+    "requires": { "minFreeDiskGB": 0.5 }
+  },
+  {
+    "id": "python",
+    "name": "Python",
+    "category": "Python",
+    "version": "3.12",
+    "channel": "uv-python",
+    "defaultSubdir": "python",
+    "versionedSubdir": true,
+    "locationPolicy": "flexible",
+    "sizeMB": 60,
+    "requiresAdmin": false,
+    "why": "由 uv 管理，可在多个版本间来回切换；装好即可直接 pip",
+    "requires": { "minFreeDiskGB": 0.5 },
+    "defaultVersion": "3.12",
+    "versions": [
+      { "id": "3.13", "label": "Python 3.13", "note": "最新版，个别库可能还没出预编译包", "sizeMB": 62 },
+      { "id": "3.12", "label": "Python 3.12", "note": "预编译包覆盖最全，新手最不容易撞上报错", "sizeMB": 60 },
+      { "id": "3.11", "label": "Python 3.11", "note": "深度学习生态适配最成熟", "sizeMB": 60 },
+      { "id": "3.10", "label": "Python 3.10", "note": "老项目兼容用", "sizeMB": 58 }
+    ]
+  },
+  {
+    "id": "node-lts",
+    "name": "Node.js LTS",
+    "category": "Node",
+    "version": "LTS（由 fnm 管理）",
+    "channel": "fnm-node",
+    "defaultSubdir": "node",
+    "locationPolicy": "flexible",
+    "sizeMB": 90,
+    "requiresAdmin": false,
+    "why": "选 LTS 而不是 Current：版本稳定、社区教程都对得上，少踩坑",
+    "requires": { "minFreeDiskGB": 0.5 },
+    "defaultVersion": "lts",
+    "versions": [
+      { "id": "lts", "label": "Node LTS", "note": "长期支持版，推荐", "sizeMB": 90 },
+      { "id": "22", "label": "Node 22", "note": "最新主线", "sizeMB": 92 },
+      { "id": "20", "label": "Node 20", "note": "上一代 LTS", "sizeMB": 88 },
+      { "id": "18", "label": "Node 18", "note": "老项目兼容用", "sizeMB": 86 }
+    ]
+  },
+  {
+    "id": "pnpm",
+    "name": "pnpm",
+    "category": "Node",
+    "version": "最新稳定版",
+    "channel": "corepack",
+    "defaultSubdir": "pnpm",
+    "locationPolicy": "flexible",
+    "sizeMB": 20,
+    "requiresAdmin": false,
+    "why": "比 npm 快且磁盘占用小得多，多项目共享依赖副本",
+    "requires": { "minFreeDiskGB": 0.2 }
+  },
+  {
+    "id": "vscode",
+    "name": "VS Code",
+    "category": "编辑器",
+    "version": "最新稳定版",
+    "channel": "manual",
+    "defaultSubdir": "vscode",
+    "locationPolicy": "flexible",
+    "sizeMB": 110,
+    "requiresAdmin": false,
+    "manualInstall": true,
+    "manual": {
+      "downloadPage": "https://code.visualstudio.com/download",
+      "directUrl": "https://update.code.visualstudio.com/latest/win32-x64-archive/stable",
+      "why": "AutoED 不代下 VS Code：微软只提供单一 CDN（vscode.download.prss.microsoft.com），实测 0.3 MB/s，110 MB 需约 14 分钟；曾经可用的国内镜像 vscode.cdn.azure.cn 已失效。这个速度放在自动安装流程里，用户看到的是一条近乎不动的进度条，会误以为程序卡死或网络断了。宁可给出明确的下载方式，让你用浏览器（自带断点与多线程）下载，几秒钟就能开始。",
+      "steps": [
+        "点「打开下载页」，在浏览器里选择 Windows x64 的 zip 版（不要选安装器版）",
+        "下载完成后解压到任意目录，例如 D:\\AutoED-env\\vscode",
+        "回到 AutoED，点「导入已下载的目录」，选中刚才解压的文件夹",
+        "AutoED 会校验 Code.exe、建立便携模式数据目录 data，并把 code 命令加入 PATH"
+      ],
+      "verifyFile": "Code.exe"
+    },
+    "why": "通用编辑器，Python / Node / C++ 三套插件生态都最全；以便携模式运行，数据留在安装目录，不占 C 盘",
+    "requires": { "minFreeDiskGB": 1 }
+  },
+  {
+    "id": "cmake",
+    "name": "CMake",
+    "category": "C++",
+    "version": "最新稳定版",
+    "channel": "zip",
+    "defaultSubdir": "cmake",
+    "locationPolicy": "flexible",
+    "sizeMB": 60,
+    "requiresAdmin": false,
+    "why": "C/C++ 构建的事实标准，几乎所有开源 C++ 项目都用它",
+    "requires": { "minFreeDiskGB": 0.3 }
+  },
+  {
+    "id": "ninja",
+    "name": "Ninja",
+    "category": "C++",
+    "version": "最新稳定版",
+    "channel": "zip",
+    "defaultSubdir": "ninja",
+    "locationPolicy": "flexible",
+    "sizeMB": 3,
+    "requiresAdmin": false,
+    "why": "比 make 快 2–3 倍的构建器，和 CMake 是绝配",
+    "requires": { "minFreeDiskGB": 0.1 }
+  },
+  {
+    "id": "w64devkit",
+    "name": "w64devkit（MinGW-w64 / GCC）",
+    "category": "C++",
+    "version": "最新稳定版",
+    "channel": "zip",
+    "defaultSubdir": "w64devkit",
+    "locationPolicy": "flexible",
+    "sizeMB": 130,
+    "requiresAdmin": false,
+    "why": "解压即用的 GCC 工具链，全程免管理员；产物分发给他人需附带运行库",
+    "requires": { "minFreeDiskGB": 1 }
+  },
+  {
+    "id": "torch-cpu",
+    "name": "PyTorch（CPU 版）",
+    "category": "AI",
+    "version": "最新稳定版",
+    "channel": "pip",
+    "defaultSubdir": "venvs\\ai",
+    "locationPolicy": "flexible",
+    "sizeMB": 300,
+    "requiresAdmin": false,
+    "why": "没有可用的 NVIDIA 显卡时最稳的选择，不依赖驱动版本",
+    "requires": { "minRamGB": 8, "minFreeDiskGB": 3 }
+  },
+  {
+    "id": "torch-cuda",
+    "name": "PyTorch（CUDA 版）",
+    "category": "AI",
+    "version": "最新稳定版",
+    "channel": "pip",
+    "defaultSubdir": "venvs\\ai",
+    "locationPolicy": "flexible",
+    "sizeMB": 2500,
+    "requiresAdmin": false,
+    "why": "检测到可用的 NVIDIA 显卡，启用 GPU 加速后训练速度可提升数倍（wheel 自带 CUDA 运行时，无需另装 CUDA Toolkit）",
+    "requires": { "minRamGB": 16, "minFreeDiskGB": 8, "nvidia": true, "minVramGB": 6 },
+    "defaultVersion": "auto",
+    "versions": [
+      { "id": "auto", "label": "自动匹配（推荐）", "note": "按显卡与驱动自动挑选可用的 CUDA 版本" },
+      { "id": "cu128", "label": "CUDA 12.8", "note": "驱动 570 及以上" },
+      { "id": "cu126", "label": "CUDA 12.6", "note": "较老的驱动用这个" },
+      { "id": "cu130", "label": "CUDA 13.0", "note": "最新，需要很新的驱动" }
+    ]
+  }
+]

@@ -1,0 +1,96 @@
+{
+  "name": "autoed",
+  "version": "0.9.0",
+  "private": true,
+  "description": "AutoED — 检测本机硬件，自动推荐并配置最合适的编程环境",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --win --dir",
+    "dist": "electron-builder --win",
+    "dist:publish": "electron-builder --win --publish always",
+    "cert:dev": "powershell -ExecutionPolicy Bypass -NoProfile -File tools/make-dev-cert.ps1",
+    "cert:trust": "powershell -ExecutionPolicy Bypass -NoProfile -File tools/trust-dev-cert.ps1",
+    "cert:verify": "powershell -ExecutionPolicy Bypass -NoProfile -File tools/verify-sign.ps1",
+    "security:audit": "powershell -ExecutionPolicy Bypass -NoProfile -File tools/security-audit.ps1",
+    "build:signed": "powershell -ExecutionPolicy Bypass -NoProfile -File tools/build-signed.ps1",
+    "sign:artifacts": "powershell -ExecutionPolicy Bypass -NoProfile -File tools/sign-artifacts.ps1",
+    "releases:refresh": "node tools/build-releases.js",
+    "verify:sources": "node tools/verify-sources.js",
+    "checksums:refresh": "node tools/refresh-checksums.js",
+    "i18n:check": "node tools/check-i18n.js",
+    "i18n:extract": "python tools/extract-i18n.py"
+  },
+  "license": "MIT",
+  "author": "MintAct Studio <1620684339@qq.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MintAct-Studio/Programming-Environment-Configurator.git"
+  },
+  "homepage": "https://github.com/MintAct-Studio/Programming-Environment-Configurator#readme",
+  "bugs": {
+    "url": "https://github.com/MintAct-Studio/Programming-Environment-Configurator/issues"
+  },
+  "devDependencies": {
+    "electron": "^45.1.0",
+    "electron-builder": "^26.18.0"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.11"
+  },
+  "build": {
+    "appId": "org.autoed.app",
+    "productName": "AutoED",
+    "asar": true,
+    "compression": "normal",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json",
+      "!**/*.log"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico",
+      "artifactName": "AutoED-${version}-${arch}.${ext}",
+      "signtoolOptions": {
+        "signingHashAlgorithms": [
+          "sha256"
+        ]
+      }
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false,
+      "artifactName": "AutoED-Setup-${version}.${ext}"
+    },
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "https://dl.autoed.app/autoed/"
+      }
+    ],
+    "portable": {
+      "artifactName": "AutoED-${version}-portable.${ext}"
+    }
+  }
+}

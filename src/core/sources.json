@@ -1,0 +1,135 @@
+{
+  "_comment": "每个组件的下载与安装方式。provider=github 时每次启动解析最新版并缓存 6 小时。kind 决定用哪种安装通道。",
+  "uv": {
+    "provider": "github",
+    "repo": "astral-sh/uv",
+    "asset": "uv-x86_64-pc-windows-msvc.zip",
+    "kind": "zip",
+    "bin": "",
+    "verify": { "file": "uv.exe", "args": ["--version"] }
+  },
+  "w64devkit": {
+    "provider": "github",
+    "repo": "skeeto/w64devkit",
+    "assetPattern": "^w64devkit-x64-.*\\.7z\\.exe$",
+    "kind": "7zsfx",
+    "bin": "bin",
+    "verify": { "file": "gcc.exe", "args": ["--version"] }
+  },
+  "fnm": {
+    "provider": "github",
+    "repo": "Schniz/fnm",
+    "asset": "fnm-windows.zip",
+    "kind": "zip",
+    "bin": "",
+    "verify": { "file": "fnm.exe", "args": ["--version"] }
+  },
+  "ninja": {
+    "provider": "github",
+    "repo": "ninja-build/ninja",
+    "asset": "ninja-win.zip",
+    "kind": "zip",
+    "bin": "",
+    "verify": { "file": "ninja.exe", "args": ["--version"] }
+  },
+  "cmake": {
+    "provider": "github",
+    "repo": "Kitware/CMake",
+    "assetPattern": "^cmake-.*-windows-x86_64\\.zip$",
+    "kind": "zip",
+    "stripTop": true,
+    "bin": "bin",
+    "verify": { "file": "cmake.exe", "args": ["--version"] }
+  },
+  "git-min": {
+    "provider": "github",
+    "repo": "git-for-windows/git",
+    "assetPattern": "^MinGit-.*-64-bit\\.zip$",
+    "kind": "zip",
+    "bin": "cmd",
+    "verify": { "file": "git.exe", "args": ["--version"] }
+  },
+  "python": {
+    "provider": "command",
+    "kind": "uv-python",
+    "needs": "uv",
+    "pythonVersion": "3.12",
+    "bin": "bin",
+    "verify": { "file": "python.exe", "args": ["--version"] }
+  },
+  "python-3.12": {
+    "provider": "command",
+    "kind": "uv-python",
+    "needs": "uv",
+    "pythonVersion": "3.12",
+    "bin": "bin",
+    "verify": { "file": "python.exe", "args": ["--version"] }
+  },
+  "python-3.11": {
+    "provider": "command",
+    "kind": "uv-python",
+    "needs": "uv",
+    "pythonVersion": "3.11",
+    "bin": "bin",
+    "verify": { "file": "python.exe", "args": ["--version"] }
+  },
+  "node-lts": {
+    "provider": "command",
+    "kind": "fnm-node",
+    "needs": "fnm",
+    "bin": "",
+    "verify": { "file": "node.exe", "args": ["--version"] }
+  },
+  "vscode": {
+    "provider": "http",
+    "url": "https://update.code.visualstudio.com/latest/win32-x64-archive/stable",
+    "assetName": "vscode-win32-x64-stable.zip",
+    "kind": "zip",
+    "bin": "bin",
+    "createDirs": ["data"],
+    "verify": { "file": "Code.exe", "inRoot": true }
+  },
+  "torch-cuda": {
+    "provider": "command",
+    "kind": "pip-venv",
+    "cudaVariants": [
+      {
+        "tag": "cu128",
+        "indexUrls": [
+          "https://mirror.sjtu.edu.cn/pytorch-wheels/cu128/",
+          "https://download.pytorch.org/whl/cu128/"
+        ]
+      },
+      {
+        "tag": "cu126",
+        "indexUrls": [
+          "https://mirror.sjtu.edu.cn/pytorch-wheels/cu126/",
+          "https://download.pytorch.org/whl/cu126/"
+        ]
+      },
+      {
+        "tag": "cu130",
+        "indexUrls": [
+          "https://mirror.sjtu.edu.cn/pytorch-wheels/cu130/",
+          "https://download.pytorch.org/whl/cu130/"
+        ]
+      }
+    ],
+    "extraIndexUrl": "https://pypi.tuna.tsinghua.edu.cn/simple",
+    "packages": ["torch", "numpy"],
+    "bootstrap": ["pip"],
+    "verify": {
+      "code": "import torch; print(torch.__version__); print('cuda=' + str(torch.cuda.is_available()))"
+    }
+  },
+  "torch-cpu": {
+    "provider": "command",
+    "kind": "pip-venv",
+    "indexUrls": ["https://pypi.tuna.tsinghua.edu.cn/simple"],
+    "packages": ["torch", "numpy"],
+    "bootstrap": ["pip"],
+    "verify": {
+      "code": "import torch; print(torch.__version__); print('cuda=' + str(torch.cuda.is_available()))"
+    }
+  }
+}

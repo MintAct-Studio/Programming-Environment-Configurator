@@ -1,0 +1,42 @@
+[
+  {
+    "id": "web",
+    "icon": "🌐",
+    "name": "网页 / 前端",
+    "desc": "HTML、CSS、JavaScript、React、Vue",
+    "components": ["git-min", "node-lts", "pnpm", "vscode"],
+    "versionHints": {}
+  },
+  {
+    "id": "backend",
+    "icon": "🧩",
+    "name": "后端服务",
+    "desc": "写接口、连数据库、部署上线",
+    "components": ["git-min", "node-lts", "pnpm"],
+    "versionHints": {}
+  },
+  {
+    "id": "data",
+    "icon": "📊",
+    "name": "数据分析 / 爬虫",
+    "desc": "处理表格、画图、抓取网页",
+    "components": ["git-min", "uv", "python", "vscode"],
+    "versionHints": { "python": "3.12" }
+  },
+  {
+    "id": "ai",
+    "icon": "🤖",
+    "name": "机器学习 / AI",
+    "desc": "训练模型、调用大模型、跑推理",
+    "components": ["git-min", "uv", "python", "torch", "vscode"],
+    "versionHints": { "python": "3.11" }
+  },
+  {
+    "id": "cpp",
+    "icon": "⚙️",
+    "name": "C / C++ 开发",
+    "desc": "桌面软件、算法、性能敏感的程序",
+    "components": ["git-min", "cpp-toolchain", "cmake", "ninja", "vscode"],
+    "versionHints": {}
+  }
+]

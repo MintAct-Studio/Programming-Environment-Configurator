@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:" />
+  <title>AutoED</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">AE</div>
+      <div class="brand__text">
+        <h1>AutoED</h1>
+        <p>自动检测硬件，为这台机器挑一套合适的编程环境</p>
+      </div>
+    </div>
+    <div class="topbar__right">
+      <select id="langSelect" class="lang-select" title="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+        <option value="ru">Русский</option>
+        <option value="fr">Français</option>
+      </select>
+      <button id="updateBtn" class="update-btn" hidden>更新</button>
+      <button id="notesBtn" class="ghost ghost--sm" hidden>注意事项</button>
+      <button id="softBtn" class="ghost ghost--sm">软件库</button>
+      <button id="advBtn" class="ghost ghost--sm">高级</button>
+      <button id="diagBtn" class="ghost ghost--sm">诊断</button>
+      <div id="permissionBadge" class="badge badge--loading">正在检测权限…</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel" id="panel-hw">
+      <div class="panel__head">
+        <h2><span class="step">1</span>设备信息</h2>
+        <button id="redetect" class="ghost ghost--sm">重新检测</button>
+      </div>
+      <div id="hwGrid" class="hw-grid">
+        <div class="hw-card hw-card--skeleton"></div>
+        <div class="hw-card hw-card--skeleton"></div>
+        <div class="hw-card hw-card--skeleton"></div>
+        <div class="hw-card hw-card--skeleton"></div>
+        <div class="hw-card hw-card--skeleton"></div>
+      </div>
+      <ul id="hwNotes" class="notes"></ul>
+    </section>
+
+    <section class="panel" id="panel-scenarios">
+      <div class="panel__head">
+        <h2><span class="step">2</span>你要做什么</h2>
+        <span class="hint">可多选</span>
+      </div>
+      <div id="scenarioGrid" class="scenario-grid"></div>
+    </section>
+
+    <section class="panel" id="panel-plan">
+      <div class="panel__head">
+        <h2><span class="step">3</span>推荐方案</h2>
+        <div class="panel__tools">
+          <button id="customizeBtn" class="ghost ghost--sm">自定义位置</button>
+          <span id="planSummary" class="hint"></span>
+        </div>
+      </div>
+      <div id="usageBar" class="usage-bar" hidden></div>
+      <div id="planBody" class="plan-body">
+        <p class="empty">选择上面至少一个方向，这里会给出针对这台机器的方案。</p>
+      </div>
+    </section>
+
+    <section class="panel panel--support" id="panel-support">
+      <div class="panel__head">
+        <h2><span class="step step--heart">♥</span>助力发电</h2>
+      </div>
+      <div class="support">
+        <div class="support__text">
+          <p class="hint">如果 AutoED 替你省下了一个下午，可以请我喝杯咖啡。完全自愿，不影响任何功能。</p>
+        </div>
+        <button id="supportBtn" class="support__btn" title="在浏览器中打开 afdian.com/a/MinthavePower">
+          助力发电
+        </button>
+      </div>
+    </section>
+
+    <section class="panel" id="diagnosticsPanel" hidden>
+      <div class="panel__head">
+        <h2><span class="step">⚙</span>诊断</h2>
+        <div class="panel__tools">
+          <span id="diagSummary" class="hint"></span>
+          <button id="diagRefresh" class="ghost ghost--sm">刷新</button>
+        </div>
+      </div>
+      <div id="diagBody" class="diag-body"></div>
+    </section>
+
+    <section class="panel" id="progressPanel" hidden>
+      <div class="panel__head">
+        <h2><span class="step">4</span>安装进度</h2>
+        <span id="progressSummary" class="hint"></span>
+      </div>
+      <div id="progressList" class="progress-list"></div>
+    </section>
+  </main>
+
+  <footer class="statusbar">
+    <label class="field">
+      <span>安装到</span>
+      <input id="installRoot" type="text" value="" placeholder="启动后自动探测" spellcheck="false" />
+    </label>
+    <div class="actions">
+      <button id="exportBtn" class="ghost" disabled>导出方案 JSON</button>
+      <button id="installBtn" class="primary" disabled>开始安装</button>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <div id="tutorial" class="tutorial" hidden>
+    <div class="tutorial__card">
+      <div class="tutorial__head">
+        <div class="tutorial__badge">新手必读</div>
+        <h2>开始之前，先了解这几件事</h2>
+        <p>AutoED 会改动你机器上的部分设置。下面说明它会改什么、不会改什么，以及网络和常见问题该怎么处理。</p>
+      </div>
+      <div class="tutorial__body" id="tutorialBody"></div>
+      <div class="tutorial__foot">
+        <span class="hint">你随时可以点左上角的「注意事项」重新查看</span>
+        <button id="tutorialOk" class="primary">我已了解，开始使用</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="software" class="soft" hidden>
+    <div class="soft__card">
+      <div class="soft__head">
+        <div>
+          <div class="soft__badge">软件库</div>
+          <h2>再装点别的</h2>
+          <p>官方提供压缩包的，AutoED 直接下载并解压到你的安装目录；只能装安装器的，给出官方地址。</p>
+        </div>
+        <button id="softClose" class="ghost ghost--sm">关闭</button>
+      </div>
+      <div class="soft__body" id="softBody"></div>
+      <div class="soft__foot">
+        <span class="hint">直装软件会落在「安装到」目录下的 apps 子目录，可随时整个删掉；跳转类软件 AutoED 不代下。</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="advanced" class="adv" hidden>
+    <div class="adv__card">
+      <div class="adv__head">
+        <div>
+          <div class="adv__badge">高级</div>
+          <h2>网络 · 日志 · 环境锁</h2>
+          <p>连不上网、装失败了、想把环境复制给别人——都从这里开始。</p>
+        </div>
+        <button id="advClose" class="ghost ghost--sm">关闭</button>
+      </div>
+      <div class="adv__body">
+        <section class="adv-sec">
+          <h3>网络</h3>
+          <p class="hint">国内直连 GitHub 经常被重置。有代理就填上，版本查询和下载都会走它。</p>
+          <div class="adv-row">
+            <input id="proxyInput" class="adv-input" placeholder="http://127.0.0.1:7890" spellcheck="false" />
+            <button id="proxySave" class="primary">保存</button>
+            <button id="proxyClear" class="ghost">不使用代理</button>
+          </div>
+          <div id="proxyStatus" class="adv-note"></div>
+        </section>
+
+        <section class="adv-sec">
+          <h3>日志</h3>
+          <p class="hint">出问题先「导出日志」，再点「解析日志文件」——常见报错会被认出来并给出处理办法。</p>
+          <div class="adv-row">
+            <button id="logExport" class="ghost">导出日志</button>
+            <button id="logParse" class="ghost">解析日志文件</button>
+          </div>
+          <div id="logFileHint" class="adv-note"></div>
+          <div id="logResult" class="adv-result" hidden></div>
+        </section>
+
+        <section class="adv-sec">
+          <h3>环境锁</h3>
+          <p class="hint">把当前环境存成一个文件。别人拿到它，就能装出和你一模一样的环境。</p>
+          <div class="adv-row">
+            <button id="lockExport" class="ghost">导出环境锁</button>
+            <button id="lockRead" class="ghost">读入并比对</button>
+          </div>
+          <div id="lockResult" class="adv-result" hidden></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div id="updateDialog" class="update-dialog" hidden>
+    <div class="update-dialog__card">
+      <div class="update-dialog__title">更新已下载</div>
+      <p class="update-dialog__text" id="updateDialogText"></p>
+      <div class="update-dialog__actions">
+        <button id="updateLater" class="ghost">稍后重启</button>
+        <button id="updateNow" class="primary">立即重启</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

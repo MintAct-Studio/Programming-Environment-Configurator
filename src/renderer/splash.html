@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline'" />
+  <title>AutoED</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: transparent;   /* 窗口本身透明，靠 .stage 的黑色铺满 */
+      user-select: none;
+    }
+
+    /* 整块黑幕：淡出时整层透明，露出后面的主窗口 */
+    .stage {
+      position: absolute;
+      inset: 0;
+      background: #000;
+      display: grid;
+      place-items: center;
+      transition: opacity .55s ease;
+      opacity: 1;
+    }
+
+    .stage.is-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* 极淡的中心光晕，避免纯黑死板 */
+    .glow {
+      position: absolute;
+      width: 78vmax;
+      height: 78vmax;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(96, 132, 200, .10) 0%,
+        rgba(70, 100, 170, .05) 32%,
+        transparent 62%
+      );
+      opacity: 0;
+      animation: glowIn 2.2s ease .1s forwards;
+      pointer-events: none;
+    }
+
+    @keyframes glowIn {
+      to { opacity: 1; }
+    }
+
+    .block {
+      position: relative;
+      text-align: center;
+      padding: 0 6vw;
+    }
+
+    /* 主文案：衬线体，庄重感 */
+    .en {
+      font-family: Georgia, "Times New Roman", "Songti SC", "SimSun", serif;
+      font-size: clamp(26px, 3.5vw, 50px);
+      font-weight: 400;
+      line-height: 1.25;
+      color: #f2f5fa;
+      letter-spacing: .28em;
+      text-indent: .28em;          /* 抵消末字多出的字距 */
+      text-shadow: 0 0 40px rgba(140, 170, 230, .28);
+      opacity: 0;
+      animation: lineIn 1.15s cubic-bezier(.22, .8, .24, 1) .18s both;
+    }
+
+    /* 长句（>30 字符）自动缩小，避免在窄窗口里溢出 */
+    .en--long {
+      font-size: clamp(19px, 2.5vw, 36px);
+      letter-spacing: .2em;
+      text-indent: .2em;
+    }
+
+    @keyframes lineIn {
+      from {
+        opacity: 0;
+        letter-spacing: .52em;
+        text-indent: .52em;
+        filter: blur(5px);
+      }
+      to {
+        opacity: 1;
+        letter-spacing: .28em;
+        text-indent: .28em;
+        filter: blur(0);
+      }
+    }
+
+    /* 中间一道细光，从中心向两边展开 */
+    .rule {
+      height: 1px;
+      width: 0;
+      margin: 26px auto 22px;
+      background: linear-gradient(90deg, transparent, rgba(150, 180, 240, .75), transparent);
+      animation: ruleIn .9s cubic-bezier(.22, .8, .24, 1) .78s forwards;
+    }
+
+    @keyframes ruleIn {
+      to { width: min(260px, 42vw); }
+    }
+
+    /* 中文小字 */
+    .cn {
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif;
+      font-size: clamp(11px, 1.15vw, 16px);
+      font-weight: 400;
+      color: #8b98ad;
+      letter-spacing: .5em;
+      text-indent: .5em;
+      opacity: 0;
+      animation: cnIn 1s ease 1.02s both;
+    }
+
+    @keyframes cnIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 底部一条极细的呼吸线，表示"还在忙" */
+    .pulse {
+      position: absolute;
+      bottom: 8vh;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 1px;
+      background: #12161f;
+      overflow: hidden;
+      opacity: 0;
+      animation: cnIn .8s ease 1.4s both;
+    }
+
+    .pulse::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      width: 46%;
+      background: linear-gradient(90deg, transparent, rgba(120, 155, 220, .55), transparent);
+      animation: slide 1.6s ease-in-out infinite;
+    }
+
+    @keyframes slide {
+      0%   { transform: translateX(-120%); }
+      100% { transform: translateX(320%); }
+    }
+  </style>
+</head>
+<body>
+  <div class="stage" id="stage">
+    <div class="glow"></div>
+    <div class="block">
+      <div class="en" id="quoteEn">I am the master of fate</div>
+      <div class="rule"></div>
+      <div class="cn" id="quoteCn">我是命运的统帅</div>
+    </div>
+    <div class="pulse"></div>
+  </div>
+  <script src="splash-quotes.js"></script>
+  <script src="splash.js"></script>
+</body>
+</html>

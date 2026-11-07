@@ -1,0 +1,42 @@
+# ---- 依赖与构建产物 ----
+node_modules/
+dist/
+out/
+build/
+*.log
+npm-debug.log*
+
+# ---- 代码签名材料（含私钥，绝不入库）----
+certs/
+*.pfx
+*.p12
+*.cer
+*.pvk
+*.snk
+
+# ---- 本机运行数据 / 安装的环境 ----
+.autoed/
+*.lock.json
+state.json.bak
+
+# ---- 宣传片、测试截图与素材（体积大 / 一手测试产物，不入库）----
+film/
+chars/
+docs/
+screenshots/
+*.mp4
+*.wav
+
+# ---- 编辑器与系统 ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- 临时文件 ----
+*.tmp
+~$*
+
+# ---- i18n 抽取/合并中间产物（词典本身要入库）----
+src/i18n/_*.json

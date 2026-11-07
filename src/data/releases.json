@@ -1,0 +1,246 @@
+{
+  "generatedAt": "2026-11-05T13:47:40.658Z",
+  "note": "内置兜底清单，仅在 GitHub API 不可用时使用。重新生成：node tools/build-releases.js",
+  "components": {
+    "uv": {
+      "version": "0.13.7",
+      "assetName": "uv-x86_64-pc-windows-msvc.zip",
+      "url": "https://github.com/astral-sh/uv/releases/download/0.13.7/uv-x86_64-pc-windows-msvc.zip",
+      "size": 15236317
+    },
+    "w64devkit": {
+      "version": "v2.11.0",
+      "assetName": "w64devkit-x64-2.11.0.7z.exe",
+      "url": "https://github.com/skeeto/w64devkit/releases/download/v2.11.0/w64devkit-x64-2.11.0.7z.exe",
+      "size": 68801240
+    },
+    "fnm": {
+      "version": "v1.39.0",
+      "assetName": "fnm-windows.zip",
+      "url": "https://github.com/Schniz/fnm/releases/download/v1.39.0/fnm-windows.zip",
+      "size": 3420688
+    },
+    "ninja": {
+      "version": "v1.13.2",
+      "assetName": "ninja-win.zip",
+      "url": "https://github.com/ninja-build/ninja/releases/download/v1.13.2/ninja-win.zip",
+      "size": 291570
+    },
+    "cmake": {
+      "version": "v4.4.5",
+      "assetName": "cmake-4.4.5-windows-x86_64.zip",
+      "url": "https://github.com/Kitware/CMake/releases/download/v4.4.5/cmake-4.4.5-windows-x86_64.zip",
+      "size": 54412232
+    },
+    "git-min": {
+      "version": "v2.56.0.windows.4",
+      "assetName": "MinGit-2.56.0.4-64-bit.zip",
+      "url": "https://github.com/git-for-windows/git/releases/download/v2.56.0.windows.4/MinGit-2.56.0.4-64-bit.zip",
+      "size": 39846926
+    }
+  },
+  "apps": {
+    "notepadpp": {
+      "versions": [
+        {
+          "version": "8.9.8.1",
+          "tag": "v8.9.8.1",
+          "assetName": "npp.8.9.8.1.portable.x64.zip",
+          "url": "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.9.8.1/npp.8.9.8.1.portable.x64.zip",
+          "size": 8250001
+        },
+        {
+          "version": "8.9.8",
+          "tag": "v8.9.8",
+          "assetName": "npp.8.9.8.portable.x64.zip",
+          "url": "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.9.8/npp.8.9.8.portable.x64.zip",
+          "size": 8232940
+        },
+        {
+          "version": "8.9.7",
+          "tag": "v8.9.7",
+          "assetName": "npp.8.9.7.portable.x64.zip",
+          "url": "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.9.7/npp.8.9.7.portable.x64.zip",
+          "size": 8210819
+        },
+        {
+          "version": "8.9.6.4",
+          "tag": "v8.9.6.4",
+          "assetName": "npp.8.9.6.4.portable.x64.zip",
+          "url": "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.9.6.4/npp.8.9.6.4.portable.x64.zip",
+          "size": 8114001
+        },
+        {
+          "version": "8.9.6.2",
+          "tag": "v8.9.6.2",
+          "assetName": "npp.8.9.6.2.portable.x64.zip",
+          "url": "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.9.6.2/npp.8.9.6.2.portable.x64.zip",
+          "size": 8110983
+        },
+        {
+          "version": "8.9.6.1",
+          "tag": "v8.9.6.1",
+          "assetName": "npp.8.9.6.1.portable.x64.zip",
+          "url": "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.9.6.1/npp.8.9.6.1.portable.x64.zip",
+          "size": 8111275
+        }
+      ]
+    },
+    "neovim": {
+      "versions": [
+        {
+          "version": "0.12.6",
+          "tag": "v0.12.6",
+          "assetName": "nvim-win64.zip",
+          "url": "https://github.com/neovim/neovim/releases/download/v0.12.6/nvim-win64.zip",
+          "size": 12624741
+        },
+        {
+          "version": "0.12.5",
+          "tag": "v0.12.5",
+          "assetName": "nvim-win64.zip",
+          "url": "https://github.com/neovim/neovim/releases/download/v0.12.5/nvim-win64.zip",
+          "size": 12623588
+        },
+        {
+          "version": "0.12.4",
+          "tag": "v0.12.4",
+          "assetName": "nvim-win64.zip",
+          "url": "https://github.com/neovim/neovim/releases/download/v0.12.4/nvim-win64.zip",
+          "size": 12617304
+        },
+        {
+          "version": "0.12.3",
+          "tag": "v0.12.3",
+          "assetName": "nvim-win64.zip",
+          "url": "https://github.com/neovim/neovim/releases/download/v0.12.3/nvim-win64.zip",
+          "size": 12614820
+        },
+        {
+          "version": "0.12.2",
+          "tag": "v0.12.2",
+          "assetName": "nvim-win64.zip",
+          "url": "https://github.com/neovim/neovim/releases/download/v0.12.2/nvim-win64.zip",
+          "size": 12603005
+        },
+        {
+          "version": "0.12.1",
+          "tag": "v0.12.1",
+          "assetName": "nvim-win64.zip",
+          "url": "https://github.com/neovim/neovim/releases/download/v0.12.1/nvim-win64.zip",
+          "size": 12592331
+        }
+      ]
+    },
+    "ripgrep": {
+      "versions": [
+        {
+          "version": "15.2.0",
+          "tag": "15.2.0",
+          "assetName": "ripgrep-15.2.0-x86_64-pc-windows-msvc.zip",
+          "url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-x86_64-pc-windows-msvc.zip",
+          "size": 1789611
+        },
+        {
+          "version": "15.1.0",
+          "tag": "15.1.0",
+          "assetName": "ripgrep-15.1.0-x86_64-pc-windows-msvc.zip",
+          "url": "https://github.com/BurntSushi/ripgrep/releases/download/15.1.0/ripgrep-15.1.0-x86_64-pc-windows-msvc.zip",
+          "size": 1810687
+        },
+        {
+          "version": "15.0.0",
+          "tag": "15.0.0",
+          "assetName": "ripgrep-15.0.0-x86_64-pc-windows-msvc.zip",
+          "url": "https://github.com/BurntSushi/ripgrep/releases/download/15.0.0/ripgrep-15.0.0-x86_64-pc-windows-msvc.zip",
+          "size": 1805250
+        },
+        {
+          "version": "14.1.1",
+          "tag": "14.1.1",
+          "assetName": "ripgrep-14.1.1-x86_64-pc-windows-msvc.zip",
+          "url": "https://github.com/BurntSushi/ripgrep/releases/download/14.1.1/ripgrep-14.1.1-x86_64-pc-windows-msvc.zip",
+          "size": 2058893
+        },
+        {
+          "version": "14.1.0",
+          "tag": "14.1.0",
+          "assetName": "ripgrep-14.1.0-x86_64-pc-windows-msvc.zip",
+          "url": "https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep-14.1.0-x86_64-pc-windows-msvc.zip",
+          "size": 2020417
+        },
+        {
+          "version": "14.0.3",
+          "tag": "14.0.3",
+          "assetName": "ripgrep-14.0.3-x86_64-pc-windows-msvc.zip",
+          "url": "https://github.com/BurntSushi/ripgrep/releases/download/14.0.3/ripgrep-14.0.3-x86_64-pc-windows-msvc.zip",
+          "size": 2015177
+        }
+      ]
+    },
+    "gh": {
+      "versions": [
+        {
+          "version": "2.103.3",
+          "tag": "v2.103.3",
+          "assetName": "gh_2.103.3_windows_amd64.zip",
+          "url": "https://github.com/cli/cli/releases/download/v2.103.3/gh_2.103.3_windows_amd64.zip",
+          "size": 15197187
+        },
+        {
+          "version": "2.103.2",
+          "tag": "v2.103.2",
+          "assetName": "gh_2.103.2_windows_amd64.zip",
+          "url": "https://github.com/cli/cli/releases/download/v2.103.2/gh_2.103.2_windows_amd64.zip",
+          "size": 15195500
+        },
+        {
+          "version": "2.103.1",
+          "tag": "v2.103.1",
+          "assetName": "gh_2.103.1_windows_amd64.zip",
+          "url": "https://github.com/cli/cli/releases/download/v2.103.1/gh_2.103.1_windows_amd64.zip",
+          "size": 15195839
+        },
+        {
+          "version": "2.103.0",
+          "tag": "v2.103.0",
+          "assetName": "gh_2.103.0_windows_amd64.zip",
+          "url": "https://github.com/cli/cli/releases/download/v2.103.0/gh_2.103.0_windows_amd64.zip",
+          "size": 15194618
+        },
+        {
+          "version": "2.102.1",
+          "tag": "v2.102.1",
+          "assetName": "gh_2.102.1_windows_amd64.zip",
+          "url": "https://github.com/cli/cli/releases/download/v2.102.1/gh_2.102.1_windows_amd64.zip",
+          "size": 15525853
+        },
+        {
+          "version": "2.102.0",
+          "tag": "v2.102.0",
+          "assetName": "gh_2.102.0_windows_amd64.zip",
+          "url": "https://github.com/cli/cli/releases/download/v2.102.0/gh_2.102.0_windows_amd64.zip",
+          "size": 15512013
+        }
+      ]
+    },
+    "dbeaver": {
+      "versions": [
+        {
+          "version": "25.3.4",
+          "tag": "25.3.4",
+          "assetName": "dbeaver-ce-25.3.4-win32.win32.x86_64.zip",
+          "url": "https://github.com/dbeaver/dbeaver/releases/download/25.3.4/dbeaver-ce-25.3.4-win32.win32.x86_64.zip",
+          "size": 128986910
+        },
+        {
+          "version": "25.3.3",
+          "tag": "25.3.3",
+          "assetName": "dbeaver-ce-25.3.3-win32.win32.x86_64.zip",
+          "url": "https://github.com/dbeaver/dbeaver/releases/download/25.3.3/dbeaver-ce-25.3.3-win32.win32.x86_64.zip",
+          "size": 128904592
+        }
+      ]
+    }
+  }
+}
