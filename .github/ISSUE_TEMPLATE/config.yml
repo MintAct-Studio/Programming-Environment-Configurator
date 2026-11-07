@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 安全漏洞
+    url: https://github.com/MintAct-Studio/Programming-Environment-Configurator/blob/main/SECURITY.md
+    about: 私钥、证书、下载源投毒等安全问题请走这里，不要开公开 issue
+  - name: 下载与安装说明
+    url: https://github.com/MintAct-Studio/Programming-Environment-Configurator#readme
+    about: 安装包在 Releases 页面；常见问题先看 README 的「已知限制」

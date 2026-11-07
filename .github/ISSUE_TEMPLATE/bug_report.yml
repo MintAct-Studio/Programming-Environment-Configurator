@@ -1,0 +1,81 @@
+name: Bug 反馈
+description: 安装失败、命令不生效、界面异常等问题
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请尽量填完整。**没有日志的 bug 报告基本无法定位**——AutoED 的日志里记录了每个下载源的测速结果、校验结论和失败原因。
+
+        > 如果是安全问题（私钥泄露、下载源被投毒等），请不要开公开 issue，见 [SECURITY.md](../blob/main/SECURITY.md)。
+
+  - type: input
+    id: version
+    attributes:
+      label: AutoED 版本
+      description: 界面右下角状态栏，或「高级 → 日志」里能看到
+      placeholder: 0.9.0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: 使用的包
+      options:
+        - 安装版（Setup）
+        - 便携版（Portable）
+        - 从源码运行（npm start）
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Windows 版本
+      description: 设置 → 系统 → 关于，复制版本号
+      placeholder: Windows 10 专业版 22H2 19045.3803
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: 发生了什么
+      description: 你点了什么、期望什么、实际看到什么
+      placeholder: |
+        1. 打开软件库，点 Notepad++ 的「安装」
+        2. 期望装到 D:\AutoED-env\apps
+        3. 实际提示「下载失败」
+    validations:
+      required: true
+
+  - type: textarea
+    id: log
+    attributes:
+      label: 日志
+      description: |
+        打开「高级 → 导出日志」，把最后 50 行左右贴进来。
+        如果安装失败，也可以直接点「解析日志文件」，把解析结果贴进来。
+      render: text
+    validations:
+      required: false
+
+  - type: input
+    id: installroot
+    attributes:
+      label: 安装目录
+      description: 底部「安装到」里显示的路径
+      placeholder: D:\AutoED-env
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 确认
+      options:
+        - label: 我已经看过 README 的「已知限制」
+          required: false
+        - label: 我搜索过现有 issue，没有重复
+          required: true

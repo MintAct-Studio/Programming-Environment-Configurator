@@ -51,6 +51,7 @@ AutoED does not promise "zero configuration" or "installs anything". It promises
 - [目录结构](#目录结构)
 - [已知限制](#已知限制)
 - [踩过的坑](#踩过的坑)
+- [参与贡献](#参与贡献)
 
 ---
 
@@ -372,6 +373,15 @@ tools/
 **界面**
 - 长面板截图时 `scrollIntoView` 对"本身就是滚动容器"的元素无效，要显式设 `scrollTop`
 - 诊断统计目录体积，串行遍历 6.6 GB 要 3.5 秒；改成按目录批次并发后 660 ms
+
+---
+
+## 参与贡献
+
+欢迎提 issue 和 PR。开发环境、代码结构、多语言文案的改法、以及提交前的自检清单都在
+**[CONTRIBUTING.md](CONTRIBUTING.md)**。
+
+版本变更见 **[CHANGELOG.md](CHANGELOG.md)**。
 
 ---
 

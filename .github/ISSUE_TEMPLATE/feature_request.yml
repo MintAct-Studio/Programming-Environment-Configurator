@@ -1,0 +1,44 @@
+name: 功能建议
+description: 希望支持新的组件、新的语言，或改进现有行为
+labels: ['enhancement']
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 你想解决什么问题
+      description: 先说场景，再说方案。比如「我要给团队 5 台机器配一样的环境，现在只能一台台点」
+      placeholder: 描述你遇到的实际问题
+    validations:
+      required: true
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: 你希望的解决方式
+      placeholder: 如果有具体想法写在这里；没有也可以，只描述问题就行
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: 涉及哪部分
+      options:
+        - 组件推荐 / 版本选择
+        - 安装与下载
+        - 诊断 / 迁移 / 卸载
+        - 软件库
+        - 环境锁
+        - 界面与多语言
+        - 其它
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternative
+    attributes:
+      label: 现在你怎么绕过这个问题
+      description: 了解变通做法有助于判断优先级
+      render: text
+    validations:
+      required: false

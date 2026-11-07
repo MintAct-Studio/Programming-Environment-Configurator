@@ -58,8 +58,22 @@ Write-Host "  $Thumbprint"
 Write-Host '  私钥不会离开 Windows 证书存储。'
 Write-Host ''
 
-$nodeDir = 'D:\AutoED-env\node\node-versions\v26.13.0\installation'
-if (Test-Path $nodeDir) { $env:PATH = "$nodeDir;$env:PATH" }
+# 优先用 PATH 里的 npm；如果本机装了 AutoED 自己的 Node，再用它
+$npm = (Get-Command npm.cmd -ErrorAction SilentlyContinue).Source
+if (-not $npm) {
+  $fallback = Join-Path $env:LOCALAPPDATA 'AutoED-env\node'
+  if (Test-Path $fallback) {
+    $nodeExe = Get-ChildItem $fallback -Recurse -Filter 'npm.cmd' -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($nodeExe) {
+      $env:PATH = "$($nodeExe.DirectoryName);$env:PATH"
+      $npm = $nodeExe.FullName
+    }
+  }
+}
+if (-not $npm) {
+  Write-Host '找不到 npm。先安装 Node.js 18+ 并确保 npm 在 PATH 里。' -ForegroundColor Red
+  exit 1
+}
 
 $env:ELECTRON_MIRROR = 'https://npmmirror.com/mirrors/electron/'
 $env:ELECTRON_BUILDER_BINARIES_MIRROR = 'https://npmmirror.com/mirrors/electron-builder-binaries/'
@@ -84,7 +98,7 @@ if ($TimestampUrl) {
   $env:ELECTRON_BUILDER_OFFLINE = 'true'
   Write-Host '不盖时间戳（自签证书场景下足够；正式发布时用 -TimestampUrl 指定）' -ForegroundColor DarkGray
 }
-& "$nodeDir\npm.cmd" run dist -- @buildArgs
+& $npm run dist -- @buildArgs
 
 if ($LASTEXITCODE -ne 0) {
   Write-Host ''

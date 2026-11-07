@@ -1,0 +1,57 @@
+name: Release
+
+# 打 tag 时自动构建 Windows 安装包并挂到 Release 上。
+# 注意：CI 里没有签名证书，构建出来的包是未签名的。
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 校验多语言词典
+        run: npm run i18n:check
+
+      - name: 打包
+        run: npm run dist
+        env:
+          # 没有证书，明确跳过签名，避免 electron-builder 去连被墙的时间戳服务器
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+          ELECTRON_BUILDER_OFFLINE: 'true'
+
+      - name: 列出产物
+        run: Get-ChildItem dist -File | Select-Object Name, Length
+        shell: pwsh
+
+      - name: 上传到 Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*.exe
+            dist/latest.yml
+          draft: false
+          prerelease: false
+          body: |
+            由 GitHub Actions 自动构建（**未签名**，Windows SmartScreen 会提示未知发布者）。
+
+            校验和见 `latest.yml`。
+
+            > 需要签名版本请参考 README 的「打包与签名」在本地构建。

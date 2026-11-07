@@ -1,0 +1,68 @@
+name: CI
+
+# 每次提交和 PR 跑一遍快速检查，不做完整打包（太慢）。
+# 完整打包在 release.yml 里，只在打 tag 时跑。
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 六种语言词典是否对齐
+        run: npm run i18n:check
+
+      - name: 语法检查
+        shell: pwsh
+        run: |
+          $files = @(
+            'src/main/main.js',
+            'src/main/preload.js',
+            'src/renderer/app.js',
+            'src/renderer/i18n.js',
+            'src/core/*.js'
+          )
+          $bad = 0
+          foreach ($f in $files) {
+            Get-ChildItem $f | ForEach-Object {
+              node --check $_.FullName
+              if ($LASTEXITCODE -ne 0) { Write-Host "FAIL $($_.Name)"; $bad++ }
+            }
+          }
+          if ($bad) { exit 1 } else { Write-Host '全部通过' }
+
+      - name: PowerShell 脚本是否带 BOM
+        shell: pwsh
+        run: |
+          # PowerShell 5.1 会把无 BOM 的 UTF-8 当 ANSI 读，中文注释会让整个脚本语法错误
+          $bad = 0
+          Get-ChildItem tools -Filter *.ps1 | ForEach-Object {
+            $b = [IO.File]::ReadAllBytes($_.FullName)[0..2]
+            if (-not ($b[0] -eq 0xEF -and $b[1] -eq 0xBB -and $b[2] -eq 0xBF)) {
+              Write-Host "缺少 BOM: $($_.Name)"
+              $bad++
+            }
+          }
+          if ($bad) { exit 1 } else { Write-Host '全部带 BOM' }
+
+      - name: 仓库里不该有私钥
+        shell: pwsh
+        run: |
+          $hits = git ls-files | Where-Object { $_ -match '\.(pfx|p12|cer|pvk|snk)$' }
+          if ($hits) { Write-Host "发现证书文件:"; $hits; exit 1 }
+          Write-Host '无证书文件'
