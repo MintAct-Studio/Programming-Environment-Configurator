@@ -1,11 +1,41 @@
 # AutoED
 
-**读你的硬件 → 推荐一套编程环境 → 点一次装完。**
+**Read your hardware → recommend an environment → install it in one click.**
 
-面向 Windows 10/11 的编程环境部署工具。不写 C 盘、不需要管理员权限、全程真实终端、装完可复现。
+A Windows 10/11 tool that sets up programming environments. Nothing goes to the system drive by default, no administrator rights are needed, every run is a real install, and the result is reproducible.
+
+> 中文说明在下方。English summary below.
+
+---
+
+## English summary
+
+AutoED detects your CPU, RAM, GPU and disks, recommends a concrete set of components for what you want to build (web, backend, data, machine learning, C/C++), and installs them at a path you choose.
+
+**Why not just ask an AI agent to set it up?** It can install things, but it cannot guarantee three properties: the result is **not reproducible**, versions **overwrite each other**, and when something breaks there is **no way to diagnose it**. AutoED targets exactly those three.
+
+- **Hardware-aware** — reads real VRAM and driver version, not just the GPU name
+- **Per-version isolation** — each Python version lives in its own directory; uninstalling one never touches another
+- **Pick your versions** — Python 3.10–3.13, Node 18–22, PyTorch CUDA variants
+- **Diagnostics** — move, reinstall, uninstall; PATH usage and a check that commands actually resolve to what AutoED installed
+- **Software library** — Notepad++, Neovim, ripgrep, GitHub CLI, DBeaver install directly
+- **Environment lock** — export the current setup; anyone who has the file can rebuild the exact same environment
+- **Network** — four mirrors probed in parallel, resumable downloads, optional HTTP proxy
+- **Supply chain** — three layers of verification (Authenticode signature, hash baseline, cross-mirror comparison); any failure aborts the install and deletes the file
+- **UI in English (default), 中文, 日本語, 한국어, Русский, Français**
+
+**Two invariants:** no administrator rights required, and nothing written to the system directory.
+
+AutoED does not promise "zero configuration" or "installs anything". It promises that **the commands work afterwards and the environment is reproducible**.
+
+**Download:** see [Releases](https://github.com/MintAct-Studio/Programming-Environment-Configurator/releases). Windows x64, portable or NSIS installer.
+
+> The current builds are signed with a self-signed development certificate, so SmartScreen will warn about an unknown publisher — choose *Run anyway*. Checksums are in `latest.yml`.
+
+---
 
 ```
-版本 0.6.9　|　Windows 10/11 x64　|　MIT
+版本 0.9.0　|　Windows 10/11 x64　|　MIT
 ```
 
 ---
@@ -121,7 +151,7 @@ Notepad++ · Neovim · ripgrep · GitHub CLI · DBeaver
 ```json
 {
   "lockVersion": 1,
-  "toolVersion": "0.6.9",
+  "toolVersion": "0.9.0",
   "installRoot": "D:\\AutoED-env",
   "components": [
     { "id": "python", "version": "3.12.7", "relativePath": "python" }
