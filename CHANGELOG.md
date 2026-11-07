@@ -45,4 +45,4 @@
 - 下载源三层校验（数字签名 / 哈希基线 / 多镜像比对）
 - 代码签名与私钥存储方案
 
-[0.9.0]: https://github.com/MintAct-Studio/Programming-Environment-Configurator/releases/tag/v0.9.0
+[0.9.0]: https://github.com/MintAct-Studio/Programming-Environment-Configurator/releases/tag/0.9.0
