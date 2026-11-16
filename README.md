@@ -1,5 +1,9 @@
 # 模型环境控制器 · AutoED
 
+[![Release](https://img.shields.io/github/v/release/MintAct-Studio/Programming-Environment-Configurator?label=release)](https://github.com/MintAct-Studio/Programming-Environment-Configurator/releases/latest)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11%20x64-0078D4)](https://github.com/MintAct-Studio/Programming-Environment-Configurator/releases/latest)
+
 **Read your hardware → recommend an environment → install it in one click.**
 
 A Windows 10/11 tool that sets up programming environments and manages local AI models. Nothing goes to the system drive by default, no administrator rights are needed, every run is a real install, and the result is reproducible.
@@ -34,7 +38,6 @@ It does not promise "zero configuration" or "installs anything". It promises tha
 **Download:** see [Releases](https://github.com/MintAct-Studio/Programming-Environment-Configurator/releases). Windows x64, portable or NSIS installer.
 
 > The current builds are signed with a self-signed development certificate, so SmartScreen will warn about an unknown publisher — choose *Run anyway*. Checksums are in `latest.yml`.
-
 ---
 
 ```
@@ -77,6 +80,15 @@ It does not promise "zero configuration" or "installs anything". It promises tha
 ---
 
 ## 快速开始
+
+**普通用户**：到 [Releases](https://github.com/MintAct-Studio/Programming-Environment-Configurator/releases/latest) 下载最新版。
+
+| 文件 | 说明 |
+|---|---|
+| `AutoED-Setup-x.y.z.exe` | 安装版，带开始菜单与卸载 |
+| `AutoED-x.y.z-portable.exe` | 免安装，双击即用 |
+
+**开发者**：
 
 ```bash
 # 开发运行
