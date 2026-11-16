@@ -1,24 +1,27 @@
-# AutoED
+# 模型环境控制器 · AutoED
 
 **Read your hardware → recommend an environment → install it in one click.**
 
-A Windows 10/11 tool that sets up programming environments. Nothing goes to the system drive by default, no administrator rights are needed, every run is a real install, and the result is reproducible.
+A Windows 10/11 tool that sets up programming environments and manages local AI models. Nothing goes to the system drive by default, no administrator rights are needed, every run is a real install, and the result is reproducible.
 
 > 中文说明在下方。English summary below.
+>
+> 项目代号仍为 **AutoED**：exe 名、appId、`%APPDATA%\autoed`、默认环境目录 `D:\AutoED-env` 都没有改，避免老用户的设置和已装组件失联。
 
 ---
 
 ## English summary
 
-AutoED detects your CPU, RAM, GPU and disks, recommends a concrete set of components for what you want to build (web, backend, data, machine learning, C/C++), and installs them at a path you choose.
+The app detects your CPU, RAM, GPU and disks, recommends a concrete set of components for what you want to build (web, backend, data, machine learning, C/C++), and installs them at a path you choose. A separate **model library** manages local AI models by category — vision, speaker verification, TTS, ASR, embeddings and language models.
 
-**Why not just ask an AI agent to set it up?** It can install things, but it cannot guarantee three properties: the result is **not reproducible**, versions **overwrite each other**, and when something breaks there is **no way to diagnose it**. AutoED targets exactly those three.
+**Why not just ask an AI agent to set it up?** It can install things, but it cannot guarantee three properties: the result is **not reproducible**, versions **overwrite each other**, and when something breaks there is **no way to diagnose it**. This tool targets exactly those three.
 
 - **Hardware-aware** — reads real VRAM and driver version, not just the GPU name
 - **Per-version isolation** — each Python version lives in its own directory; uninstalling one never touches another
 - **Pick your versions** — Python 3.10–3.13, Node 18–22, PyTorch CUDA variants
-- **Diagnostics** — move, reinstall, uninstall; PATH usage and a check that commands actually resolve to what AutoED installed
+- **Diagnostics** — move, reinstall, uninstall; PATH usage and a check that commands actually resolve to what was installed
 - **Software library** — Notepad++, Neovim, ripgrep, GitHub CLI, DBeaver install directly
+- **Model library** — 17 models across 6 AI categories; download what is directly available, register what you fetched elsewhere
 - **Environment lock** — export the current setup; anyone who has the file can rebuild the exact same environment
 - **Network** — four mirrors probed in parallel, resumable downloads, optional HTTP proxy
 - **Supply chain** — three layers of verification (Authenticode signature, hash baseline, cross-mirror comparison); any failure aborts the install and deletes the file
@@ -26,7 +29,7 @@ AutoED detects your CPU, RAM, GPU and disks, recommends a concrete set of compon
 
 **Two invariants:** no administrator rights required, and nothing written to the system directory.
 
-AutoED does not promise "zero configuration" or "installs anything". It promises that **the commands work afterwards and the environment is reproducible**.
+It does not promise "zero configuration" or "installs anything". It promises that **the commands work afterwards and the environment is reproducible**.
 
 **Download:** see [Releases](https://github.com/MintAct-Studio/Programming-Environment-Configurator/releases). Windows x64, portable or NSIS installer.
 
@@ -35,7 +38,7 @@ AutoED does not promise "zero configuration" or "installs anything". It promises
 ---
 
 ```
-版本 0.9.0　|　Windows 10/11 x64　|　MIT
+版本 0.10.0　|　Windows 10/11 x64　|　MIT
 ```
 
 ---

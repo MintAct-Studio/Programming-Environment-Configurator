@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:" />
-  <title>AutoED</title>
+  <title>模型环境控制器</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -12,7 +12,7 @@
     <div class="brand">
       <div class="logo">AE</div>
       <div class="brand__text">
-        <h1>AutoED</h1>
+        <h1>模型环境控制器</h1>
         <p>自动检测硬件，为这台机器挑一套合适的编程环境</p>
       </div>
     </div>
@@ -27,6 +27,7 @@
       </select>
       <button id="updateBtn" class="update-btn" hidden>更新</button>
       <button id="notesBtn" class="ghost ghost--sm" hidden>注意事项</button>
+      <button id="modelBtn" class="ghost ghost--sm">模型库</button>
       <button id="softBtn" class="ghost ghost--sm">软件库</button>
       <button id="advBtn" class="ghost ghost--sm">高级</button>
       <button id="diagBtn" class="ghost ghost--sm">诊断</button>
@@ -130,6 +131,26 @@
       <div class="tutorial__foot">
         <span class="hint">你随时可以点左上角的「注意事项」重新查看</span>
         <button id="tutorialOk" class="primary">我已了解，开始使用</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="models" class="models" hidden>
+    <div class="models__card">
+      <div class="models__head">
+        <div>
+          <div class="models__badge">模型库</div>
+          <h2>按类别管理 AI 模型</h2>
+          <p>左边选类别，右边下载或登记。能直连官方的自动下载并校验，只能网页下载的给出地址，下好后再登记进来。</p>
+        </div>
+        <button id="modelsClose" class="ghost ghost--sm">关闭</button>
+      </div>
+      <div class="models__body">
+        <aside class="models__nav" id="modelsNav"></aside>
+        <div class="models__list" id="modelsList"></div>
+      </div>
+      <div class="models__foot">
+        <span class="hint" id="modelsRootHint"></span>
       </div>
     </div>
   </div>

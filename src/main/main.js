@@ -12,12 +12,32 @@ const { migrateComponent, buildStatusReport } = require('../core/migrate')
 const { uninstallComponent, planUninstall } = require('../core/uninstall')
 const { validateTarget, probeWritable } = require('../core/validate')
 const { catalog: appCatalog, listVersions: listAppVersions, installApp } = require('../core/apps')
+const {
+  catalog: modelsCatalog,
+  install: modelsInstall,
+  importLocal: modelsImport,
+  remove: modelsRemove,
+  pathOf: modelsPathOf
+} = require('../core/models')
 const http = require('../core/http')
 const logger = require('../core/logger')
 const lockfile = require('../core/lockfile')
 const { parse: parseLog } = require('../core/logparse')
 const { loadState } = require('../core/state')
 const { pickInstallRoot } = require('../core/drive')
+
+/**
+ * 显示名。exe 名、appId、%APPDATA%\autoed、默认环境目录都保持 AutoED 不变——
+ * 改这些会让老用户的设置、PATH 记录、已装组件全部失联。
+ */
+const DISPLAY_NAME = {
+  zh: '模型环境控制器',
+  en: 'Model Environment Controller',
+  ja: 'モデル環境コントローラー',
+  ko: '모델 환경 컨트롤러',
+  ru: 'Контроллер окружений моделей',
+  fr: "Contrôleur d'environnements de modèles"
+}
 
 /** 支持的界面语言（默认英语） */
 const DEFAULT_LOCALE = 'en'
@@ -174,6 +194,17 @@ async function writeSettings(next) {
   await fs.writeFile(settingsPath(), JSON.stringify(next, null, 2), 'utf8')
 }
 
+/** 窗口标题按界面语言取显示名 */
+async function appWindowTitle() {
+  try {
+    const s = await readSettings()
+    const lang = SUPPORTED_LOCALES.includes(s.locale) ? s.locale : DEFAULT_LOCALE
+    return DISPLAY_NAME[lang] || DISPLAY_NAME[DEFAULT_LOCALE]
+  } catch {
+    return DISPLAY_NAME[DEFAULT_LOCALE]
+  }
+}
+
 /**
  * 应用代理设置。
  * 两边都要设：session 影响渲染进程与 net.fetch，http 模块让 Node 侧的请求也跟上。
@@ -271,7 +302,7 @@ function createWindow() {
     minHeight: 640,
     backgroundColor: '#0d1017',
     show: false,
-    title: 'AutoED — 环境自动配置',
+    title: DISPLAY_NAME[DEFAULT_LOCALE],
     autoHideMenuBar: true,
     icon: path.join(__dirname, '../../assets/icon.png'),
     webPreferences: {
@@ -304,6 +335,11 @@ function createWindow() {
       setTimeout(reveal, 25000) // 界面异常时兜底，绝不把用户永久卡在启动画面
     }
   })
+  // 标题按界面语言取显示名（createWindow 是同步的，这里异步补一次）
+  appWindowTitle().then((t) => {
+    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.setTitle(t)
+  })
+
   // --demo=ai,cpp 会在界面加载后自动勾选这些方向，方便截图与演示
   const demoArg = process.argv.find((a) => a.startsWith('--demo='))
   const query = {}
@@ -312,6 +348,7 @@ function createWindow() {
   if (process.argv.includes('--show-locations')) query.locations = '1'
   if (process.argv.includes('--show-diag')) query.diag = '1'
   if (process.argv.includes('--show-software')) query.software = '1'
+  if (process.argv.includes('--show-models')) query.models = '1'
   if (process.argv.includes('--show-advanced')) query.advanced = '1'
   const lockArg = process.argv.find((a) => a.startsWith('--demo-lock='))
   if (lockArg) query.lock = lockArg.slice('--demo-lock='.length)
@@ -634,6 +671,89 @@ app.whenReady().then(() => {
     } finally {
       installRunning = false
     }
+  })
+
+  // ---- 模型库 ----
+  ipcMain.handle('models:catalog', async (_event, payload = {}) => {
+    const installRoot = String(payload.installRoot || '').trim() || pickInstallRoot()
+    try {
+      return { ok: true, ...(await modelsCatalog(installRoot)) }
+    } catch (err) {
+      return { ok: false, error: err.message || '读取模型清单失败' }
+    }
+  })
+
+  ipcMain.handle('models:install', async (_event, payload = {}) => {
+    const id = String(payload.id || '')
+    const installRoot = String(payload.installRoot || '').trim() || pickInstallRoot()
+    if (installRunning) return { ok: false, error: '已有下载任务在进行' }
+
+    installRunning = true
+    try {
+      let lastPct = -1
+      const rec = await modelsInstall({
+        id,
+        installRoot,
+        onProgress: (p) => {
+          const pct = Math.round(Number(p.percent) || 0)
+          if (pct === lastPct) return
+          lastPct = pct
+          if (mainWindow && !mainWindow.isDestroyed()) {
+            mainWindow.webContents.send('models:progress', { id, ...p })
+          }
+        }
+      })
+      return { ok: true, record: rec }
+    } catch (err) {
+      logger.error('models', `下载 ${id} 失败：${err.message}`)
+      return { ok: false, error: err.message || '下载失败' }
+    } finally {
+      installRunning = false
+    }
+  })
+
+  // 官方只给网页下载的模型：选一个已经下好的目录/文件，登记进来
+  ipcMain.handle('models:import', async (_event, payload = {}) => {
+    const id = String(payload.id || '')
+    const installRoot = String(payload.installRoot || '').trim() || pickInstallRoot()
+    const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
+      title: '选择已下载的模型目录或文件',
+      properties: ['openFile', 'openDirectory']
+    })
+    if (canceled || !filePaths.length) return { ok: false, canceled: true }
+    try {
+      const rec = await modelsImport({ id, installRoot, sourcePath: filePaths[0] })
+      return { ok: true, record: rec }
+    } catch (err) {
+      return { ok: false, error: err.message || '登记失败' }
+    }
+  })
+
+  ipcMain.handle('models:remove', async (_event, payload = {}) => {
+    const id = String(payload.id || '')
+    const installRoot = String(payload.installRoot || '').trim() || pickInstallRoot()
+    try {
+      return { ok: true, ...(await modelsRemove({ id, installRoot })) }
+    } catch (err) {
+      return { ok: false, error: err.message || '删除失败' }
+    }
+  })
+
+  ipcMain.handle('models:openPage', async (_event, payload = {}) => {
+    const model = (await modelsCatalog(pickInstallRoot())).models.find((m) => m.id === payload.id)
+    if (!model) return { ok: false, error: '未知模型' }
+    const url = model.page || model.url
+    if (!url) return { ok: false, error: '这个模型没有官方页面' }
+    await shell.openExternal(url)
+    return { ok: true }
+  })
+
+  ipcMain.handle('models:reveal', async (_event, payload = {}) => {
+    const installRoot = String(payload.installRoot || '').trim() || pickInstallRoot()
+    const p = await modelsPathOf({ id: String(payload.id || ''), installRoot })
+    if (!p) return { ok: false, error: '还没下载这个模型' }
+    shell.showItemInFolder(p)
+    return { ok: true }
   })
 
   // ---- 面板独立窗口 ----

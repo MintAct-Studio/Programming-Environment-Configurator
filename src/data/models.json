@@ -1,0 +1,259 @@
+{
+  "categories": [
+    {
+      "id": "vision",
+      "icon": "👁",
+      "name": { "zh": "视觉模型", "en": "Vision" },
+      "desc": { "zh": "目标检测、超分、人脸", "en": "Detection, upscaling, faces" }
+    },
+    {
+      "id": "speaker",
+      "icon": "🎙",
+      "name": { "zh": "声纹模型", "en": "Speaker" },
+      "desc": { "zh": "说话人识别与比对", "en": "Speaker verification" }
+    },
+    {
+      "id": "tts",
+      "icon": "🔊",
+      "name": { "zh": "语音合成 TTS", "en": "Text to speech" },
+      "desc": { "zh": "文本转语音", "en": "Text to speech" }
+    },
+    {
+      "id": "asr",
+      "icon": "📝",
+      "name": { "zh": "语音识别 ASR", "en": "Speech recognition" },
+      "desc": { "zh": "语音转文字", "en": "Speech to text" }
+    },
+    {
+      "id": "embedding",
+      "icon": "🧭",
+      "name": { "zh": "向量检索", "en": "Embeddings" },
+      "desc": { "zh": "文本向量与语义搜索", "en": "Embeddings and retrieval" }
+    },
+    {
+      "id": "llm",
+      "icon": "💬",
+      "name": { "zh": "大语言模型", "en": "Language models" },
+      "desc": { "zh": "本地对话与推理", "en": "Local chat and inference" }
+    }
+  ],
+  "models": [
+    {
+      "id": "yolov8n",
+      "category": "vision",
+      "name": "YOLOv8n",
+      "vendor": "Ultralytics",
+      "params": "3.2M",
+      "sizeMB": 6,
+      "license": "AGPL-3.0",
+      "desc": { "zh": "最小的检测模型，CPU 也能跑到实时", "en": "Smallest detector; real-time even on CPU" },
+      "channel": "github",
+      "url": "https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8n.pt",
+      "file": "yolov8n.pt",
+      "page": "https://docs.ultralytics.com/models/yolov8/"
+    },
+    {
+      "id": "yolov8s",
+      "category": "vision",
+      "name": "YOLOv8s",
+      "vendor": "Ultralytics",
+      "params": "11.2M",
+      "sizeMB": 22,
+      "license": "AGPL-3.0",
+      "desc": { "zh": "精度与速度兼顾，显卡上更划算", "en": "Better accuracy, still fast on a GPU" },
+      "channel": "github",
+      "url": "https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8s.pt",
+      "file": "yolov8s.pt",
+      "page": "https://docs.ultralytics.com/models/yolov8/"
+    },
+    {
+      "id": "realesrgan-x4",
+      "category": "vision",
+      "name": "Real-ESRGAN x4plus",
+      "vendor": "Xintao",
+      "params": "16.7M",
+      "sizeMB": 64,
+      "license": "BSD-3-Clause",
+      "desc": { "zh": "4 倍图片超分，老照片修复常用", "en": "4× image upscaling, common for photo restoration" },
+      "channel": "github",
+      "url": "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth",
+      "file": "RealESRGAN_x4plus.pth",
+      "page": "https://github.com/xinntao/Real-ESRGAN"
+    },
+    {
+      "id": "buffalo-l",
+      "category": "vision",
+      "name": "buffalo_l",
+      "vendor": "InsightFace",
+      "params": "65M",
+      "sizeMB": 275,
+      "license": "MIT",
+      "desc": { "zh": "人脸检测、对齐、识别三合一", "en": "Face detection, alignment and recognition in one" },
+      "channel": "github",
+      "url": "https://github.com/deepinsight/insightface/releases/download/v0.7/buffalo_l.zip",
+      "file": "buffalo_l.zip",
+      "page": "https://github.com/deepinsight/insightface"
+    },
+
+    {
+      "id": "campplus",
+      "category": "speaker",
+      "name": "CAM++",
+      "vendor": "3D-Speaker",
+      "params": "7.2M",
+      "sizeMB": 28,
+      "license": "Apache-2.0",
+      "desc": { "zh": "中文说话人验证，短语音也稳", "en": "Chinese speaker verification, robust on short clips" },
+      "channel": "page",
+      "page": "https://modelscope.cn/models/iic/speech_campplus_sv_zh-cn_16k-common"
+    },
+    {
+      "id": "wespeaker-r34",
+      "category": "speaker",
+      "name": "WeSpeaker ResNet34",
+      "vendor": "WeSpeaker",
+      "params": "6.3M",
+      "sizeMB": 26,
+      "license": "Apache-2.0",
+      "desc": { "zh": "VoxCeleb 训练，英文场景通用", "en": "Trained on VoxCeleb, solid for English" },
+      "channel": "page",
+      "page": "https://github.com/wenet-e2e/wespeaker"
+    },
+    {
+      "id": "ecapa-tdnn",
+      "category": "speaker",
+      "name": "ECAPA-TDNN",
+      "vendor": "SpeechBrain",
+      "params": "20.8M",
+      "sizeMB": 80,
+      "license": "Apache-2.0",
+      "desc": { "zh": "通用声纹嵌入，论文复现最多", "en": "General-purpose speaker embeddings, widely reproduced" },
+      "channel": "page",
+      "page": "https://huggingface.co/speechbrain/spkrec-ecapa-voxceleb"
+    },
+
+    {
+      "id": "piper-zh",
+      "category": "tts",
+      "name": "Piper zh_CN",
+      "vendor": "Rhasspy",
+      "params": "—",
+      "sizeMB": 63,
+      "license": "MIT",
+      "desc": { "zh": "轻量离线中文 TTS，CPU 可实时", "en": "Lightweight offline Chinese TTS, real-time on CPU" },
+      "channel": "page",
+      "page": "https://huggingface.co/rhasspy/piper-voices"
+    },
+    {
+      "id": "cosyvoice-300m",
+      "category": "tts",
+      "name": "CosyVoice-300M",
+      "vendor": "Alibaba",
+      "params": "300M",
+      "sizeMB": 1000,
+      "license": "Apache-2.0",
+      "desc": { "zh": "零样本音色克隆，中文自然度好", "en": "Zero-shot voice cloning, natural Chinese" },
+      "channel": "page",
+      "page": "https://modelscope.cn/models/iic/CosyVoice-300M"
+    },
+    {
+      "id": "melotts",
+      "category": "tts",
+      "name": "MeloTTS",
+      "vendor": "MyShell",
+      "params": "52M",
+      "sizeMB": 180,
+      "license": "MIT",
+      "desc": { "zh": "多语种合成，速度优先", "en": "Multilingual, optimised for speed" },
+      "channel": "page",
+      "page": "https://github.com/myshell-ai/MeloTTS"
+    },
+
+    {
+      "id": "whisper-small",
+      "category": "asr",
+      "name": "Whisper small",
+      "vendor": "OpenAI",
+      "params": "244M",
+      "sizeMB": 461,
+      "license": "MIT",
+      "desc": { "zh": "多语种识别，生态与工具最全", "en": "Multilingual, the widest tooling ecosystem" },
+      "channel": "page",
+      "page": "https://huggingface.co/openai/whisper-small"
+    },
+    {
+      "id": "paraformer-zh",
+      "category": "asr",
+      "name": "Paraformer-zh",
+      "vendor": "FunASR",
+      "params": "220M",
+      "sizeMB": 840,
+      "license": "Apache-2.0",
+      "desc": { "zh": "中文识别，带标点与时间戳", "en": "Chinese ASR with punctuation and timestamps" },
+      "channel": "page",
+      "page": "https://modelscope.cn/models/iic/speech_paraformer-large_asr_nat-zh-cn-16k-common-vocab8404-pytorch"
+    },
+    {
+      "id": "sensevoice-small",
+      "category": "asr",
+      "name": "SenseVoice small",
+      "vendor": "FunASR",
+      "params": "234M",
+      "sizeMB": 470,
+      "license": "Apache-2.0",
+      "desc": { "zh": "多语种 + 情感 + 事件检测", "en": "Multilingual plus emotion and event tagging" },
+      "channel": "page",
+      "page": "https://modelscope.cn/models/iic/SenseVoiceSmall"
+    },
+
+    {
+      "id": "bge-small-zh",
+      "category": "embedding",
+      "name": "bge-small-zh-v1.5",
+      "vendor": "BAAI",
+      "params": "24M",
+      "sizeMB": 96,
+      "license": "MIT",
+      "desc": { "zh": "中文检索首选，小又快", "en": "The default pick for Chinese retrieval" },
+      "channel": "page",
+      "page": "https://huggingface.co/BAAI/bge-small-zh-v1.5"
+    },
+    {
+      "id": "text2vec-base",
+      "category": "embedding",
+      "name": "text2vec-base-chinese",
+      "vendor": "shibing624",
+      "params": "102M",
+      "sizeMB": 400,
+      "license": "Apache-2.0",
+      "desc": { "zh": "中文句向量，老项目兼容好", "en": "Chinese sentence embeddings, broad compatibility" },
+      "channel": "page",
+      "page": "https://huggingface.co/shibing624/text2vec-base-chinese"
+    },
+
+    {
+      "id": "qwen2.5-0.5b",
+      "category": "llm",
+      "name": "Qwen2.5-0.5B-Instruct",
+      "vendor": "Alibaba",
+      "params": "0.5B",
+      "sizeMB": 990,
+      "license": "Apache-2.0",
+      "desc": { "zh": "能在核显机器上跑的中文对话模型", "en": "Chinese chat model that runs on integrated graphics" },
+      "channel": "page",
+      "page": "https://modelscope.cn/models/qwen/Qwen2.5-0.5B-Instruct"
+    },
+    {
+      "id": "qwen2.5-1.5b",
+      "category": "llm",
+      "name": "Qwen2.5-1.5B-Instruct",
+      "vendor": "Alibaba",
+      "params": "1.5B",
+      "sizeMB": 3100,
+      "license": "Apache-2.0",
+      "desc": { "zh": "笔记本可跑的通用对话模型", "en": "General chat model that fits on a laptop" },
+      "channel": "page",
+      "page": "https://modelscope.cn/models/qwen/Qwen2.5-1.5B-Instruct"
+    }
+  ]
+}

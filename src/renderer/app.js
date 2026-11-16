@@ -1266,6 +1266,7 @@ async function init() {
     }
 
     if (params.get('software') === '1') openSoftware()
+    if (params.get('models') === '1') openModels()
     if (params.get('advanced') === '1') openAdvanced()
 
     const lockPath = params.get('lock')
@@ -1657,6 +1658,192 @@ $('#software').addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && !$('#software').hidden) closeSoftware()
 })
+
+// ---------------- 模型库 ----------------
+
+let modelState = { categories: [], models: [], modelsRoot: null }
+let modelCategory = 'all'
+
+function pickLang(obj) {
+  if (!obj) return ''
+  if (typeof obj === 'string') return obj
+  const lang = window.i18n && window.i18n.lang
+  return obj[lang] || obj.en || obj.zh || ''
+}
+
+function modelCard(m) {
+  const card = el('div', 'model-card')
+  if (m.installed) card.classList.add('is-ready')
+
+  const top = el('div', 'model-card__top')
+  top.append(el('div', 'model-card__name', m.name))
+  top.append(el('div', 'model-card__vendor', m.vendor))
+  card.append(top)
+
+  card.append(el('div', 'model-card__desc', pickLang(m.desc)))
+
+  const meta = el('div', 'model-card__meta')
+  if (m.params && m.params !== '—') meta.append(el('span', 'model-tag', m.params))
+  meta.append(el('span', 'model-tag', `${m.sizeMB >= 1024 ? (m.sizeMB / 1024).toFixed(1) + ' GB' : m.sizeMB + ' MB'}`))
+  meta.append(el('span', 'model-tag', m.license))
+  if (m.channel === 'github') meta.append(el('span', 'model-tag model-tag--ok', T('可直接下载')))
+  else meta.append(el('span', 'model-tag model-tag--warn', T('需手动下载')))
+  if (m.installed) meta.append(el('span', 'model-tag model-tag--ready', T('已就绪')))
+  card.append(meta)
+
+  const progress = el('div', 'model-card__progress', '')
+  const actions = el('div', 'model-card__actions')
+
+  if (!m.installed && m.channel === 'github') {
+    const btn = el('button', 'primary', T('下载'))
+    btn.addEventListener('click', async () => {
+      btn.disabled = true
+      const res = await window.autoed
+        .modelsInstall({ id: m.id, installRoot: $('#installRoot').value.trim() })
+        .catch((e) => ({ ok: false, error: e.message }))
+      btn.disabled = false
+      if (res.ok) {
+        progress.textContent = ''
+        await loadModels()
+      } else {
+        progress.textContent = res.error || T('下载失败')
+      }
+    })
+    actions.append(btn)
+  }
+
+  if (!m.installed && m.channel === 'page') {
+    const open = el('button', 'ghost', T('打开下载页'))
+    open.addEventListener('click', () => window.autoed.modelsOpenPage(m.id))
+    actions.append(open)
+
+    const imp = el('button', 'ghost', T('登记已下载'))
+    imp.addEventListener('click', async () => {
+      const res = await window.autoed
+        .modelsImport({ id: m.id, installRoot: $('#installRoot').value.trim() })
+        .catch((e) => ({ ok: false, error: e.message }))
+      if (res.ok) await loadModels()
+      else if (!res.canceled) progress.textContent = res.error || T('登记失败')
+    })
+    actions.append(imp)
+  }
+
+  if (m.installed) {
+    const reveal = el('button', 'ghost', T('打开所在目录'))
+    reveal.addEventListener('click', () =>
+      window.autoed.modelsReveal({ id: m.id, installRoot: $('#installRoot').value.trim() })
+    )
+    actions.append(reveal)
+
+    const del = el('button', 'ghost', T('移除'))
+    del.addEventListener('click', async () => {
+      del.disabled = true
+      const res = await window.autoed
+        .modelsRemove({ id: m.id, installRoot: $('#installRoot').value.trim() })
+        .catch((e) => ({ ok: false, error: e.message }))
+      del.disabled = false
+      if (res.ok) await loadModels()
+      else progress.textContent = res.error || T('移除失败')
+    })
+    actions.append(del)
+  }
+
+  card.append(actions)
+  card.append(progress)
+  card.dataset.modelId = m.id
+  return card
+}
+
+function renderModelNav() {
+  const nav = $('#modelsNav')
+  nav.innerHTML = ''
+
+  const counts = {}
+  for (const m of modelState.models) counts[m.category] = (counts[m.category] || 0) + 1
+
+  const all = el('div', 'models__navitem')
+  all.append(el('span', 'ico', '🗂'))
+  all.append(el('span', '', T('全部模型')))
+  all.append(el('span', 'cnt', String(modelState.models.length)))
+  if (modelCategory === 'all') all.classList.add('is-active')
+  all.addEventListener('click', () => {
+    modelCategory = 'all'
+    renderModelNav()
+    renderModelList()
+  })
+  nav.append(all)
+
+  for (const c of modelState.categories) {
+    const item = el('div', 'models__navitem')
+    item.append(el('span', 'ico', c.icon || '•'))
+    item.append(el('span', '', pickLang(c.name)))
+    item.append(el('span', 'cnt', String(counts[c.id] || 0)))
+    if (modelCategory === c.id) item.classList.add('is-active')
+    item.addEventListener('click', () => {
+      modelCategory = c.id
+      renderModelNav()
+      renderModelList()
+    })
+    nav.append(item)
+  }
+}
+
+function renderModelList() {
+  const list = $('#modelsList')
+  list.innerHTML = ''
+  const items = modelState.models.filter((m) => modelCategory === 'all' || m.category === modelCategory)
+  if (!items.length) {
+    list.append(el('div', 'model-card__desc', T('这个类别下还没有模型')))
+    return
+  }
+  for (const m of items) list.append(modelCard(m))
+}
+
+async function loadModels() {
+  const res = await window.autoed
+    .modelsCatalog($('#installRoot').value.trim())
+    .catch((e) => ({ ok: false, error: e.message }))
+  if (!res.ok) {
+    $('#modelsList').innerHTML = ''
+    $('#modelsList').append(el('div', 'model-card__desc', res.error || T('读取模型清单失败')))
+    return
+  }
+  modelState = { categories: res.categories || [], models: res.models || [], modelsRoot: res.modelsRoot }
+  renderModelNav()
+  renderModelList()
+  const ready = modelState.models.filter((m) => m.installed).length
+  $('#modelsRootHint').textContent = modelState.modelsRoot
+    ? `${T('模型目录')}：${modelState.modelsRoot}　·　${T('已就绪')} ${ready}/${modelState.models.length}`
+    : ''
+}
+
+function openModels() {
+  $('#models').hidden = false
+  loadModels()
+}
+
+function closeModels() {
+  $('#models').hidden = true
+}
+
+$('#modelBtn').addEventListener('click', openModels)
+$('#modelsClose').addEventListener('click', closeModels)
+$('#models').addEventListener('click', (e) => {
+  if (e.target.id === 'models') closeModels()
+})
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !$('#models').hidden) closeModels()
+})
+
+// 下载进度回填到对应卡片
+if (window.autoed.onModelsProgress) {
+  window.autoed.onModelsProgress((p) => {
+    const card = document.querySelector(`.model-card[data-model-id="${p.id}"]`)
+    if (!card) return
+    const line = card.querySelector('.model-card__progress')
+    if (line) line.textContent = p.message || ''
+  })
+}
 
 // 安装进度：把主进程推来的 phase/percent 写回对应卡片
 if (window.autoed.onAppProgress) {

@@ -41,6 +41,19 @@ contextBridge.exposeInMainWorld('autoed', {
   // 界面语言词典
   getI18n: () => ipcRenderer.invoke('i18n:get'),
 
+  // 模型库
+  modelsCatalog: (installRoot) => ipcRenderer.invoke('models:catalog', { installRoot }),
+  modelsInstall: (payload) => ipcRenderer.invoke('models:install', payload),
+  modelsImport: (payload) => ipcRenderer.invoke('models:import', payload),
+  modelsRemove: (payload) => ipcRenderer.invoke('models:remove', payload),
+  modelsOpenPage: (id) => ipcRenderer.invoke('models:openPage', { id }),
+  modelsReveal: (payload) => ipcRenderer.invoke('models:reveal', payload),
+  onModelsProgress: (callback) => {
+    const handler = (_event, payload) => callback(payload)
+    ipcRenderer.on('models:progress', handler)
+    return () => ipcRenderer.removeListener('models:progress', handler)
+  },
+
   // 面板独立窗口与跨窗口同步
   detachPanel: (payload) => ipcRenderer.invoke('panel:detach', payload),
   syncGet: () => ipcRenderer.invoke('sync:get'),

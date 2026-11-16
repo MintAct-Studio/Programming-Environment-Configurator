@@ -1,8 +1,8 @@
 {
   "name": "autoed",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "private": true,
-  "description": "AutoED — 检测本机硬件，自动推荐并配置最合适的编程环境",
+  "description": "模型环境控制器 —— 检测本机硬件，配置编程环境，并按类别管理本地 AI 模型",
   "main": "src/main/main.js",
   "scripts": {
     "start": "electron .",

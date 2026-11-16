@@ -2,6 +2,25 @@
 
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循语义化版本。
 
+## [0.10.0] — 2026-11-16
+
+### 新增
+
+- **模型库**：顶栏新增「模型库」，按 AI 模型类别管理本地模型
+  - 六个类别：视觉、声纹、语音合成（TTS）、语音识别（ASR）、向量检索、大语言模型
+  - 内置 17 个模型，标注参数量、体积、许可证与来源
+  - 能直连官方的（YOLOv8n/s、Real-ESRGAN、InsightFace buffalo_l）一键下载，走镜像 + 断点续传
+  - 只能网页下载的（HuggingFace / ModelScope）给出官方地址，下好后可「登记已下载」把本地目录登记进来
+  - 已就绪/未就绪状态、打开所在目录、移除（只删本程序装的那份，登记的外部路径只取消登记）
+  - 模型落在 `<安装目录>\models\<类别>\<模型 id>\`，登记表是 `models\index.json`
+
+### 变更
+
+- **改名为「模型环境控制器」**（英文 Model Environment Controller）
+  - 界面标题、窗口标题、安装包显示名、README 全部更新，六种语言都有对应译名
+  - **内部标识保持不变**：exe 名 `AutoED.exe`、appId `org.autoed.app`、`%APPDATA%\autoed`、默认环境目录 `D:\AutoED-env`、`autoed.lock.json`
+  - 原因：改这些会让老用户的设置、PATH 记录、已装组件全部失联
+
 ## [0.9.0] — 2026-11-07
 
 首个公开版本。
